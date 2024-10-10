@@ -1,19 +1,24 @@
 
 import {Outlet} from 'react-router-dom'
 import SignUpBtn from './SignUpBtn'
+import headerLogo from '../images/InterfazHome/HeaderWebUniversae.png'
 
 function Body() {
   return (
-    <div className="w-screen h-dvh flex flex-col justify-between items-center">
-      <header className="w-full flex justify-between items-center bg-blue-600 p-4 shadow-md">
-        <div className="flex-shrink-0"><div className="text-3xl logo">Logo</div><SignUpBtn/></div>
+    <div className="w-screen h-screen flex flex-col justify-between items-center">
+      
+      <header className=" w-full grow-0 flex items-center bg-blue-600 p-4 shadow-md">
+        <div className="header w-full flex-shrink-0 flex flex-row justify-between">
+          <div className="text-3xl logo"><img src={headerLogo} alt="Header logo" /></div>
+            
+        </div>
       </header>
 
-      <main className="w-full p-4 flex-grow bg-blue">
+      <main className="w-full grow">
         <Outlet />
       </main>
 
-      <footer className="w-full bg-gray-200 text-center p-4">
+      <footer className="w-full grow-0 bg-gray-200 text-center p-4">
         © 2024 My Application
       </footer>
     </div>
