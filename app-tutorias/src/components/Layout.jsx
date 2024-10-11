@@ -19,7 +19,8 @@ function Body() {
       </main>
 
       <footer className="w-full grow-0 bg-gray-200 text-center p-4">
-        © 2024 My Application
+        © 2024 Tutorías Universae | Alejandro Gomez | Bryan Salazar
+
       </footer>
     </div>
   )

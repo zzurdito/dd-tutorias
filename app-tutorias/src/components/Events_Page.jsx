@@ -1,14 +1,13 @@
-
 import NavBar from './NavBar'
-import Calendar from './Calendar'
+import Events from './Events'
 
-function Calendar_Page() {
+function Events_Page() {
   return (
     <div className="h-full flex">
         <NavBar/>
-        <Calendar />
+        <Events/>
     </div>
   )
 }
 
-export default Calendar_Page
+export default Events_Page
