@@ -1,6 +1,5 @@
 
 import {Outlet} from 'react-router-dom'
-import SignUpBtn from './SignUpBtn'
 import headerLogo from '../images/InterfazHome/HeaderWebUniversae.png'
 
 function Body() {

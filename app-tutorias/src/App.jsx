@@ -6,7 +6,6 @@ import './output.css'
 import Calendar_Page from './components/Calendar_Page'
 import Events_Page from './components/Events_Page'
 import MyProfile_Page from './components/MyProfile_Page'
-import NavBar from './components/NavBar'
 
 function App() {
 
