@@ -1,4 +1,4 @@
-package com.app_tutorias.tutorias;
+package com.app_tutorias.model;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;

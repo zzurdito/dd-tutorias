@@ -1,16 +1,23 @@
-
+import './styles/NavBar.css'
+import LogOutBtn from './LogOutBtn'
+import {Link} from 'react-router-dom'
 
 function NavBar() {
   return (
-<div className="flex">
+<div className="navbar h-full flex bg-blue-500 w-64">
       {/* Navbar vertical */}
-      <nav className="bg-gray-800 w-64 min-h-screen flex flex-col space-y-2 p-4">
+      <nav className="w-64 flex flex-col">
         {/* Enlaces principales */}
-        <h3 className="py-2 px-4 bg-gray-700 text-xl rounded-md hover:bg-gray-600">Dashboard</h3>
-        <a href="#" className="py-2 px-5 text-white text-center bg-blue-600 rounded-md hover:bg-gray-500">Calendar</a>
-        <a href="#" className="py-2 px-5 text-white text-center bg-blue-600 rounded-md hover:bg-gray-500">Events</a>
-        <a href="#" className="py-2 px-5 bg-gray-700 text-white text-center bg-blue-600 rounded-md hover:bg-gray-600">Buy tokens</a>
-        <a href="#" className="py-2 px-5 bg-gray-700 text-white text-center bg-blue-600 rounded-md hover:bg-gray-600">My profile</a>
+        <div className="principal-ref">
+          <Link to="/content/calendar" className="btn-navbar bg-blue-600 hover:bg-blue-700 text-white font-bold rounded">Calendar</Link>
+          <Link to="/content/events" className="btn-navbar bg-blue-600 hover:bg-blue-700 text-white font-bold rounded">Events</Link>
+         <Link to="/content/profile" className="btn-navbar bg-blue-600 hover:bg-blue-700 text-white font-bold rounded">My profile</Link>
+        </div>
+        <div className="info">
+          <div className="tokens text-white font-bold">14 tokens</div>
+          <a href="#" className="btn-navbar bg-blue-600 hover:bg-blue-700 text-white font-bold rounded">Buy tokens</a>
+          <LogOutBtn />
+        </div>
       </nav>
     </div>
   )
