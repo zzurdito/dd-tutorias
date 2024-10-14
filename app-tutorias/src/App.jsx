@@ -1,5 +1,6 @@
 import Layout from './components/Layout'
 import Login from './components/Login'
+import Register from './components/Register'
 import {Routes , Route } from 'react-router-dom'
 import './App.css'
 import './output.css'
@@ -13,6 +14,7 @@ function App() {
           <Route path='/' element={<Layout/>} >
             <Route path="login" element={<Login/>} />
             <Route path="calendar" element={<Calendar_Page/>} />
+            <Route path="register" element={<Register/>} />
           </Route>
         </Routes>
   )
