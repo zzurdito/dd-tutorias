@@ -591,7 +591,7 @@ video {
 }
 
 .h-screen{
-    height: 100vh !important;
+    height: 100vh;
 }
 
 
@@ -601,10 +601,6 @@ video {
 
 .w-full {
   width: 100%;
-}
-
-.m-2{
-  margin: 2rem;
 }
 
 .max-w-md {
@@ -780,26 +776,4 @@ video {
 .focus\:ring-blue-500:focus {
   --tw-ring-opacity: 1;
   --tw-ring-color: rgb(59 130 246 / var(--tw-ring-opacity));
-}
-
-
-.header{
-  justify-content: space-between;
-}
-
-.grow{
-  flex-grow: 1;
-}
-
-.grow-0{
-  flex-grow: 0;
-}
-
-.my-8{
-  margin-top: 2rem;
-  margin-bottom: 2rem;
-}
-
-.h-full{
-  height: 100%;
 }
