@@ -2,7 +2,7 @@
 
 function MyProfile() {
   return (
-    <div className="grid grid-cols-2 grid-rows-1 gap-4 w-full ml-2">
+    <div className="grid grid-cols-2 grid-rows-1 gap-4 w-full ml-2 bg-gray-100">
      
       <div className="max-h-max w-full p-8 my-8 space-y-6 bg-white rounded-lg shadow-lg">
         <h2 className="block text-3xl font-medium text-gray-700">Datos del usuario:</h2>
