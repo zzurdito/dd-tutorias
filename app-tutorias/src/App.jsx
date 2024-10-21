@@ -8,7 +8,9 @@ import Events_Page from './components/Events_Page'
 import MyProfile_Page from './components/MyProfile_Page'
 
 function App() {
-
+  <script async
+  src="https://js.stripe.com/v3/buy-button.js">
+</script>
 
   return (
         <Routes>

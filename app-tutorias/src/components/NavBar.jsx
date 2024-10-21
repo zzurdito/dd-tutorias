@@ -1,6 +1,7 @@
 import './styles/NavBar.css'
 import LogOutBtn from './LogOutBtn'
 import {Link} from 'react-router-dom'
+import VoucherBtn from './VoucherBtn'
 
 function NavBar() {
   return (
@@ -15,7 +16,7 @@ function NavBar() {
         </div>
         <div className="info">
           <div className="tokens text-white font-bold">14 tokens</div>
-          <a href="#" className="btn-navbar bg-blue-600 hover:bg-blue-700 text-white font-bold rounded">Buy tokens</a>
+          <VoucherBtn />
           <LogOutBtn />
         </div>
       </nav>
