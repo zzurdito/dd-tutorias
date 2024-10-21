@@ -3,6 +3,9 @@
     "java.configuration.updateBuildConfiguration": "interactive",
     "cSpell.words": [
         "Correo",
+        "nombre",
+        "obtener",
+        "Supabase",
         "tutorias",
         "Usuario",
         "usuarios"

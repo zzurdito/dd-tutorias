@@ -13,12 +13,16 @@
     "@fullcalendar/core": "^6.1.15",
     "@fullcalendar/daygrid": "^6.1.15",
     "@fullcalendar/react": "^6.1.15",
+    "@stripe/react-stripe-js": "^2.8.1",
+    "@stripe/stripe-js": "^4.8.0",
+    "@supabase/supabase-js": "^2.45.6",
     "app-tutorias": "file:",
     "fullcalendar": "^6.1.15",
     "jquery": "^3.7.1",
     "react": "^18.3.1",
     "react-dom": "^18.3.1",
-    "react-router-dom": "^6.26.2"
+    "react-router-dom": "^6.26.2",
+    "stripe": "^17.2.0"
   },
   "devDependencies": {
     "@eslint/js": "^9.11.1",
