@@ -145,8 +145,8 @@ const Register = () =>{
                                     <select className="w-full px-3 py-2 mt-1 border rounded-md focus:outline-none focus:ring focus:ring-blue-500 focus:border-blue-500" 
                                     value={Grade}
                                     onChange={(e) => setGrade(e.target.value)}>
-                                        <option value="default"> DAM</option>
-                                        <option value="">DAW</option>
+                                        <option value="DAM"> DAM</option>
+                                        <option value="DAW">DAW</option>
                                     </select>
                                 </div>
                     </div>
