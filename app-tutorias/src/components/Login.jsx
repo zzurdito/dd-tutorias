@@ -4,6 +4,7 @@ import logo from '../images/InterfazHome/logo-universae-linktree.webp'
 import { supabase } from './supabase/SupabaseCliente'
 
 const Login = () => {
+
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
@@ -73,7 +74,7 @@ const Login = () => {
           Don&apos;t have an account?{' '}
           <button
             className="text-blue-600 hover:underline"
-            onClick={() => navigate('/signup')}
+            onClick={() => navigate('/register')}
           >
             Create one
           </button>

@@ -4,7 +4,7 @@ import MyProfile from './MyProfile'
 
 function MyProfile_Page() {
   return (
-    <div className="h-full flex">
+    <div className="h-full flex bg-gray-100">
     <NavBar/>
     <MyProfile/>
 </div>

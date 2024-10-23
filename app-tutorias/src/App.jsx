@@ -1,3 +1,4 @@
+
 import Layout from './components/Layout';
 import Login from './components/Login';
 import headerLogo from './images/InterfazHome/HeaderWebUniversae.png'
@@ -66,6 +67,7 @@ function App() {
               <Route path="events" element={<Events_Page />} />
               <Route path="profile" element={<MyProfile_Page />} />
             </Route>
+            <Route path="register" element={<Register/>} />
           </Route>
         </Routes>
       )}
