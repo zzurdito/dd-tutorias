@@ -18,23 +18,23 @@ const Register = () =>{
     
     const handleRegister = async (e) => {
         e.preventDefault();
-        
-
         if (Password !== ConfirmPassword) {
             setPasswordError("Las contraseñas no coinciden");
             return;
         }
         try{
-            const {data, error} = await supabase.auth.signUp({
-                email: Email,
-                password : Password,
-            });
-                ;
+            const {data, error} = await supabase.auth.signUp( //funcion que permite el registro de un usuario mediante la confirmacion por email
+                {
+                    email: Email,
+                    password: Password,
+                }
+            )
+                
             if (error) {
-                console.error("Error al registrar el usuario:", error);
+                console.error("Error al registrar el usuario:", error.message);
             } else {
-                const user = supabase.auth.user();
-                const {error: insertError} = await supabase
+                
+                const {error: insertError} = await supabase //inserta el usuario en la tabla usuario
                     .from('usuario')
                     .insert([
                         {
@@ -64,7 +64,7 @@ const Register = () =>{
 
 
     };
-    const handleConfirmPassword = (e) => {
+    const handleConfirmPassword = (e) => { //Muestra un mensaje justo debajo de la seccion contraseña indicando que no coinciden
         setConfirmPassword(e.target.value);
         if (Password !== e.target.value) {
           setPasswordError("Las contraseñas no coinciden");
