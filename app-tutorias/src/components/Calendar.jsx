@@ -11,8 +11,8 @@ const [eventos, setEventos] = useState([]);
   // Función para obtener los eventos de Supabase
   
   const fetchEventos = async () => {
-    const { data, error } = await supabase
-      .from('tutoria')  // Nombre de la tabla en Supabase
+    const { data:tutoriasData, error:tutoriasError } = await supabase
+      .from('user_tutorias')  // Nombre de la tabla en Supabase
       .select('id, id_usuario, usuario!id_admin(name), fecha');  // Seleccionamos las columnas relevantes
 
     if (error) {
