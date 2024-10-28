@@ -15,7 +15,7 @@ const Login = () => {
     const checkSession = async () => {
       const { data } = await supabase.auth.getSession();
       if (data.session) {
-        navigate('/content');  // Redirige al contenido si ya hay una sesión activa
+        navigate('/content/calendar');  // Redirige al contenido si ya hay una sesión activa
       }
     };
 

@@ -6,6 +6,7 @@ import './output.css';
 import Calendar_Page from './components/Calendar_Page';
 import Events_Page from './components/Events_Page';
 import MyProfile_Page from './components/MyProfile_Page';
+import Voucher_Page from './components/Voucher_Page';
 import Register from './components/Register';
 import ProtectedRoute from './components/ProtectedRoute';
 import { useState, useEffect } from 'react';
@@ -48,7 +49,7 @@ function App() {
         ) : (
           <>
             {/* Rutas solo accesibles si hay sesión */}
-            <Route path="content" element={
+            <Route path="/content" element={
               <ProtectedRoute>
                 <Outlet />
               </ProtectedRoute>
@@ -56,6 +57,7 @@ function App() {
               <Route path="calendar" element={<Calendar_Page />} />
               <Route path="events" element={<Events_Page />} />
               <Route path="profile" element={<MyProfile_Page />} />
+              <Route path="voucher" element={<Voucher_Page />} />
             </Route>
           </>
         )}
