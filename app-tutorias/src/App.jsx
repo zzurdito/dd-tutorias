@@ -10,10 +10,10 @@ import Voucher_Page from './components/Voucher_Page';
 import Register from './components/Register';
 import ProtectedRoute from './components/ProtectedRoute';
 import { useState, useEffect } from 'react';
-import { supabase } from './components/supabase/SupabaseCliente'
+import { supabase } from './components/supabase/SupabaseCliente';
 
 function App() {
-  const [session, setSession] = useState(false);
+  const [session, setSession] = useState(null);
 
   // useEffect para manejar la sesión
   useEffect(() => {
@@ -42,23 +42,24 @@ function App() {
         {/* Si no hay sesión, se muestra Login o Register */}
         {!session ? (
           <>
-            <Route path='/' element={<Navigate to="/login" />} />
+            <Route path="/" element={<Navigate to="/login" />} />
             <Route path="login" element={<Login />} />
             <Route path="register" element={<Register />} />
+            {/* Ruta comodín para redirigir cualquier ruta desconocida a /login */}
+            <Route path="*" element={<Navigate to="/login" />} />
           </>
         ) : (
           <>
-            {/* Rutas solo accesibles si hay sesión */}
-            <Route path="/content" element={
-              <ProtectedRoute>
-                <Outlet />
-              </ProtectedRoute>
-            }>
+            {/* Rutas protegidas solo accesibles si hay sesión */}
+            <Route path="/content" element={<ProtectedRoute><Outlet /></ProtectedRoute>}>
               <Route path="calendar" element={<Calendar_Page />} />
               <Route path="events" element={<Events_Page />} />
               <Route path="profile" element={<MyProfile_Page />} />
               <Route path="voucher" element={<Voucher_Page />} />
             </Route>
+
+            {/* Ruta comodín para redirigir cualquier ruta desconocida a /content/calendar */}
+            <Route path="*" element={<Navigate to="/content/calendar" />} />
           </>
         )}
       </Route>

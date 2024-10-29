@@ -1,8 +1,14 @@
 AppTutorias
+1.1.4. (29102024) Alejandro Gomez
+---------------------------------
+- Muestra de eventos en el calendario ya en funcionamiento.
+- Rutas arregladas para que si hay sesion iniciada te dirija directamente al calendario, etc.
+- Boton de logout funcionando. 
+- Spinner.jsx y Spinner.css creado y funcionando (ruleta de carga).
+
 1.1.3 (28102024) Alejandro Gomez
 --------------------------------
 - Arreglado el router para que si hay sesion iniciada te diriga directamente al calendario.
-- Eventos de las tutorias mostrado en el calendario.
 - BD arreglada las relaciones para poder relacionar la informacion del usuario con el login y las tutorias.
 
 1.1.2 (25102024) Alejandro Gomez
