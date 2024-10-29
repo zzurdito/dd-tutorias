@@ -57,8 +57,8 @@ useEffect(() => {
           <Link to="/content/events" className="btn-navbar bg-blue-600 hover:bg-blue-700 text-white font-bold rounded">Events</Link>
          <Link to="/content/profile" className="btn-navbar bg-blue-600 hover:bg-blue-700 text-white font-bold rounded">My profile</Link>
         </div>
-        <div className="info">
-          <div className="tokens text-white font-bold">{tokens} tokens</div>
+        <div className="info principal-ref">
+          <div className="tokens text-white font-bold text-3xl">{tokens} tokens</div>
           <VoucherBtn />
           <LogOutBtn />
         </div>
