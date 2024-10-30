@@ -785,3 +785,15 @@ video {
   --tw-ring-opacity: 1;
   --tw-ring-color: rgb(59 130 246 / var(--tw-ring-opacity));
 }
+
+
+._btn{
+  padding: 0.5rem 1rem;
+  border-radius: 0.5rem;
+  font-weight: 500;
+  font-size: 1rem;
+  line-height: 1.5rem;
+  transition: all 0.3s ease-in-out;
+  cursor: pointer;
+  color: black !important;
+}

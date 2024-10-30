@@ -3,6 +3,7 @@ import { supabase } from './supabase/SupabaseCliente';
 import { useNavigate } from 'react-router-dom';
 import { useEffect } from 'react';
 import logo from '../images/InterfazHome/logo-universae-linktree.webp';
+import Spinner from './Spinner';
 
 const Register = () => {
   const navigate = useNavigate();  // Hook para navegar entre páginas
@@ -77,6 +78,10 @@ const Register = () => {
       setError('');  // Limpiar error si coinciden
     }
   };
+
+  const goToLogin = () => {
+    navigate('/login');
+  } // Hook para navegar entre páginas
 
   return (
     <div className="flex items-center justify-center bg-gray-100 h-full">
@@ -184,8 +189,17 @@ const Register = () => {
             disabled={loading}
             className="w-full px-4 py-2 text-white bg-blue-600 rounded-md hover:bg-blue-700 focus:outline-none focus:ring focus:ring-blue-500"
           >
-            {loading ? 'Signing up...' : 'Sign up'}
+            {loading ? <Spinner /> : 'Sign up'}
           </button>
+          <p className="mt-4 text-center text-sm text-gray-600">
+          Already have an account?{' '}
+          <button
+            className="text-blue-600 hover:underline"
+            onClick={goToLogin}
+          >
+            Sign in
+          </button>
+        </p>
         </form>
       </div>
     </div>
