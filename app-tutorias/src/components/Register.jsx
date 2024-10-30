@@ -19,6 +19,21 @@ const Register = () => {
   const [message, setMessage] = useState('');
   // eslint-disable-next-line no-unused-vars
   const [loading, setLoading] = useState(false);
+  const insertar_datos = async ()=>{
+    const { data: { user } } = await supabase.auth.getUser()
+    const { error } = await supabase
+    .from('user_profile')
+    .insert(
+      {
+        username: username,
+        name: name,
+        surname: surname,
+        grade: grade,
+        user_id: user.id, 
+      }
+    )
+
+  }
 
 
   useEffect(() => {
@@ -48,8 +63,10 @@ const Register = () => {
         password: password,
         
       });
+      insertar_datos();
       
-      const { data: { user } } = await supabase.auth.getUser();
+
+
         // Insertar en la tabla `user_profile` usando el UID de `auth`
         
         
@@ -57,6 +74,7 @@ const Register = () => {
       if (error) {
         setError(error.message);
       } else {
+
         
         setMessage('Registro exitoso. Por favor, verifica tu correo para activar la cuenta.');
         navigate('/login');
@@ -150,7 +168,7 @@ const Register = () => {
                 value={grade}
                 onChange={(e) => setGrade(e.target.value)}
               >
-                <option value="DAM">DAM</option>
+                <option selected="selected"  value="DAM">DAM</option>
                 <option value="DAW">DAW</option>
               </select>
             </div>
