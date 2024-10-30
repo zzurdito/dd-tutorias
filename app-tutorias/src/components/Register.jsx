@@ -24,7 +24,7 @@ const Register = () => {
     const checkSession = async () => {
       const { data } = await supabase.auth.getSession();
       if (data.session) {
-        navigate('/content');  // Redirige al contenido si ya hay una sesión activa
+        navigate('/content/profile');  // Redirige al contenido si ya hay una sesión activa
       }
     };
 
@@ -42,24 +42,24 @@ const Register = () => {
 
     try {
       // Registro del usuario con el esquema auth de Supabase
-      const { error } = await supabase.auth.signUp({
+      const {data, error } = await supabase.auth.signUp({
         email: email,
         password: password,
-        options: {
-          data: {
-            username: username,
-            name: name,
-            surname: surname,
-            grade: grade,
-          },
-        },
+        
       });
+      
+      const { data: { user } } = await supabase.auth.getUser();
+        // Insertar en la tabla `user_profile` usando el UID de `auth`
+        
+        
 
       if (error) {
         setError(error.message);
       } else {
+        
         setMessage('Registro exitoso. Por favor, verifica tu correo para activar la cuenta.');
-        navigate('/login');  // Redirigir a la página de login
+        navigate('/login');
+          // Redirigir a la página de login
       }
     } catch (err) {
       console.error("Error inesperado:", err);
