@@ -1,4 +1,9 @@
 AppTutorias
+1.1.5 (30102024) Bryan Salazar
+---------------------------------
+-Register funcionando pero sin validar Email
+-Myprofile ya muestra los datos del usuario con el que se ha iniciado sesion
+-
 1.1.4. (29102024) Alejandro Gomez
 ---------------------------------
 - Muestra de eventos en el calendario ya en funcionamiento.
