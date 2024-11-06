@@ -28,6 +28,7 @@ const Login = () => {
     e.preventDefault(); // Evita recargar la página
     setLoading(true); // Inicia la carga al hacer login
 
+    // eslint-disable-next-line no-unused-vars
     const { data, error } = await supabase.auth.signInWithPassword({
       email: email,
       password: password,
@@ -37,7 +38,7 @@ const Login = () => {
       setError(error.message);
       setLoading(false); // Termina la carga si hay error
     } else {
-      console.log('Login successful', data);
+      //console.log('Login successful', data);
       navigate('/content/calendar'); // Redirige al calendario si el login es exitoso
     }
   };

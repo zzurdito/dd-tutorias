@@ -1,4 +1,9 @@
 AppTutorias
+1.1.7 (06112024) Alejandro Gomez
+---------------------------------
+- Arreglado navbar para que muestre los token solo si es usuario y no admin.
+- Arreglado el calendario para que si es admin muestre todas las tutorias con sus alumnos.
+
 1.1.6 (31102024) Alejandro Gomez
 ---------------------------------
 - ZoomMeeting.jsx cambiado a useZoomMeeting.jsx en la carpeta hooks.
