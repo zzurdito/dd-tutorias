@@ -8,8 +8,8 @@ import zoomIcon from '../assets/zoom-icon.png';
 
 function Calendar() {
   const [eventos, setEventos] = useState([]);
-
   const [user, setUser] = useState(null);
+  const [isAdmin, setIsAdmin] = useState(false);
 
   // Importa la función handleEventAdd desde useZoomMeeting
   const { handleEventAdd } = useZoomMeeting();
@@ -19,7 +19,8 @@ function Calendar() {
       const { data: { session } } = await supabase.auth.getSession();
       if (session?.user) {
         setUser(session.user);
-        console.log("ID del usuario:", session.user.id);
+        //console.log("ID del usuario:", session.user.id);
+        fetchUserProfile(session.user.id);
       }
     };
 
@@ -29,7 +30,7 @@ function Calendar() {
       const newUser = session?.user || null;
       setUser(newUser);
       if (newUser) {
-        fetchEventos(newUser.id);
+        fetchUserProfile(newUser.id);
       }
     });
 
@@ -38,12 +39,12 @@ function Calendar() {
     };
   }, []);
 
-  const fetchEventos = async (userId) => {
-    // Primero, busca el fk_user_profile numérico correspondiente al UUID del usuario en user_profile
+  const fetchUserProfile = async (userId) => {
+    // Obtener el perfil del usuario para determinar si es admin/tutor o alumno
     const { data: userData, error: userError } = await supabase
       .from('user_profile')
-      .select('id')
-      .eq('user_id', userId)  // Cambia 'uuid' al campo correcto que almacena el UUID
+      .select('id, admin')
+      .eq('user_id', userId)
       .single();
 
     if (userError) {
@@ -51,28 +52,31 @@ function Calendar() {
       return;
     }
 
-    const fkUserProfile = userData?.id;
+    setIsAdmin(userData?.admin || false);
+    fetchEventos(userData?.id);
+  };
 
-
-
+  const fetchEventos = async (fkUserProfile) => {
+    // Obtener eventos según el rol
     const { data: tutoriasData, error: tutoriasError } = await supabase
       .from('user_tutorias')
       .select('id, user:user_profile!fk_user_profile(name), admin:user_profile!fk_admin_profile(name), date, url_zoom')
-      .eq('fk_user_profile', fkUserProfile)
+      .eq(isAdmin ? 'fk_admin_profile' : 'fk_user_profile', fkUserProfile) // Filtrar según rol
       .order('date', { ascending: true });
-    console.log("Tutorias:", tutoriasData);
 
     if (tutoriasError) {
       console.error('Error al obtener eventos:', tutoriasError);
-    } else {
-      const eventosFormateados = tutoriasData.map(evento => ({
-        id: evento.id,
-        title: `Tutoria con ${evento.admin?.name || 'Desconocido'}`,
-        start: evento.date,
-        zoom_link: evento.url_zoom // Asegúrate de incluir el zoom_link si está en la base de datos
-      }));
-      setEventos(eventosFormateados);
+      return;
     }
+
+    const eventosFormateados = tutoriasData.map(evento => ({
+      id: evento.id,
+      title: isAdmin ? `Reunión con ${evento.user?.name || 'Desconocido'}` : `Reunión con ${evento.admin?.name || 'Desconocido'}`,
+      start: evento.date,
+      zoom_link: evento.url_zoom
+    }));
+    setEventos(eventosFormateados);
+    //console.log("IsAdmin? " + isAdmin);
   };
 
   const renderEventContent = (eventInfo) => (
@@ -98,7 +102,6 @@ function Calendar() {
         </div>
       )}
     </div>
-
   );
 
   return (
