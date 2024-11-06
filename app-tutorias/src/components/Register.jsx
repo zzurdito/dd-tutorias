@@ -19,13 +19,28 @@ const Register = () => {
   const [message, setMessage] = useState('');
   // eslint-disable-next-line no-unused-vars
   const [loading, setLoading] = useState(false);
+  const insertar_datos = async ()=>{
+    const { data: { user } } = await supabase.auth.getUser()
+    const { error } = await supabase
+    .from('user_profile')
+    .insert(
+      {
+        username: username,
+        name: name,
+        surname: surname,
+        grade: grade,
+        user_id: user.id, 
+      }
+    )
+
+  }
 
 
   useEffect(() => {
     const checkSession = async () => {
       const { data } = await supabase.auth.getSession();
       if (data.session) {
-        navigate('/content');  // Redirige al contenido si ya hay una sesión activa
+        navigate('/content/profile');  // Redirige al contenido si ya hay una sesión activa
       }
     };
 
@@ -43,24 +58,27 @@ const Register = () => {
 
     try {
       // Registro del usuario con el esquema auth de Supabase
-      const { error } = await supabase.auth.signUp({
+      const {data, error } = await supabase.auth.signUp({
         email: email,
         password: password,
-        options: {
-          data: {
-            username: username,
-            name: name,
-            surname: surname,
-            grade: grade,
-          },
-        },
+        
       });
+      insertar_datos();
+      
+
+
+        // Insertar en la tabla `user_profile` usando el UID de `auth`
+        
+        
 
       if (error) {
         setError(error.message);
       } else {
+
+        
         setMessage('Registro exitoso. Por favor, verifica tu correo para activar la cuenta.');
-        navigate('/login');  // Redirigir a la página de login
+        navigate('/login');
+          // Redirigir a la página de login
       }
     } catch (err) {
       console.error("Error inesperado:", err);
@@ -150,7 +168,7 @@ const Register = () => {
                 value={grade}
                 onChange={(e) => setGrade(e.target.value)}
               >
-                <option value="DAM">DAM</option>
+                <option selected="selected"  value="DAM">DAM</option>
                 <option value="DAW">DAW</option>
               </select>
             </div>

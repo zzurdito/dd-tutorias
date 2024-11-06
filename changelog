@@ -1,4 +1,5 @@
 AppTutorias
+
 1.1.7 (06112024) Alejandro Gomez
 ---------------------------------
 - Arreglado navbar para que muestre los token solo si es usuario y no admin.
@@ -20,6 +21,11 @@ AppTutorias
 - Rutas actualizadas.
 - ZoomMeeting.jsx creado. (Componente para la integracion de zoom).
 - Instalado el paquete @zoomus/websdk para la integracion de zoom.
+
+1.1.5 (30102024) Bryan Salazar
+---------------------------------
+-Register funcionando pero sin validar Email
+-Myprofile ya muestra los datos del usuario con el que se ha iniciado sesion
 
 1.1.4. (29102024) Alejandro Gomez
 ---------------------------------
