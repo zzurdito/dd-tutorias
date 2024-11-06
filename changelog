@@ -1,9 +1,32 @@
 AppTutorias
+
+1.1.7 (06112024) Alejandro Gomez
+---------------------------------
+- Arreglado navbar para que muestre los token solo si es usuario y no admin.
+- Arreglado el calendario para que si es admin muestre todas las tutorias con sus alumnos.
+
+1.1.6 (31102024) Alejandro Gomez
+---------------------------------
+- ZoomMeeting.jsx cambiado a useZoomMeeting.jsx en la carpeta hooks.
+- ZoomMeeting.jsx eliminado.
+- Icono de zoom agregado en assets para mostrar en el calendario.
+- Columna url_zoom agregada en la base de datos para las tutorias.
+- Codigo de useZoomMeeting arreglado.
+- Calendar.jsx arreglado para que funcione con la nueva base de datos, ahora si muestra los eventos de cada usuario y no todos los eventos..
+
+1.1.5 (30102024) Alejandro Gomez
+---------------------------------
+- Boton para acceder a la reunion en el calendario funcionando.
+- Zoom_Page.jsx creado.
+- Rutas actualizadas.
+- ZoomMeeting.jsx creado. (Componente para la integracion de zoom).
+- Instalado el paquete @zoomus/websdk para la integracion de zoom.
+
 1.1.5 (30102024) Bryan Salazar
 ---------------------------------
 -Register funcionando pero sin validar Email
 -Myprofile ya muestra los datos del usuario con el que se ha iniciado sesion
--
+
 1.1.4. (29102024) Alejandro Gomez
 ---------------------------------
 - Muestra de eventos en el calendario ya en funcionamiento.
