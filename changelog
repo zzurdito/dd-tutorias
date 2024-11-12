@@ -1,4 +1,13 @@
 AppTutorias
+1.1.8 (12112024) Alejandro Gomez
+--------------------------------
+- Backend server.js para solicitar url de zoom
+- Hook useZoomMeeting.jsx creado para cada vez que se compre un evento este se llame y genere una nueva reuncion y se guarde en la base de datos
+
+1.1.7 (06112024) Alejandro Gomez
+- Arreglado navbar para que muestre los token solo si es usuario y no admin.
+- Arreglado el calendario para que si es admin muestre todas las tutorias con sus alumnos.
+
 1.1.6 (12112024) Bryan Salazar
 ---------------------------------
 -Event ya muestra los profesores y los horarios disponible
