@@ -3,7 +3,7 @@ import FullCalendar from '@fullcalendar/react';
 import dayGridPlugin from '@fullcalendar/daygrid';
 import { useState, useEffect } from 'react';
 import { supabase } from './supabase/SupabaseCliente';
-import useZoomMeeting from './hooks/useZoomMeeting';
+import useZoomMeeting from '../../../backend-js/server';
 import zoomIcon from '../assets/zoom-icon.png';
 
 function Calendar() {
