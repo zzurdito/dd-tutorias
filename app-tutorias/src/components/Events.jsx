@@ -47,6 +47,7 @@ function Events() {
     }
      
   }
+
   const handleConfirmAppointment = async (hora) => {
     if (tokens > 0) {
       try {
@@ -85,6 +86,9 @@ function Events() {
         }
   
         // Restar un token
+        if (tokenError){
+          console.log('error en el programa:', error)
+        } else {
         await supabase
           .from('user_tokens')
           .update({ token: userTokens.token - 1 })
@@ -104,6 +108,7 @@ function Events() {
         alert('Cita agendada correctamente');
         // Actualizar el estado de tokens después de la acción
         fetchTokens(user.id); // Re-fetch tokens
+        }
   
       } catch (error) {
         console.error('Error al confirmar la cita:', error);
