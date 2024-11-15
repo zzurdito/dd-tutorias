@@ -1,4 +1,4 @@
-
+//deprecated
 import NavBar from './NavBar'
 import ZoomMeeting from './hooks/useZoomMeeting'
 

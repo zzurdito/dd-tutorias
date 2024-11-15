@@ -8,7 +8,6 @@ import Events_Page from './components/Events_Page';
 import MyProfile_Page from './components/MyProfile_Page';
 import Voucher_Page from './components/Voucher_Page';
 import Register from './components/Register';
-import Zoom_Page from './components/Zoom_Page';
 import ProtectedRoute from './components/ProtectedRoute';
 import { useState, useEffect } from 'react';
 import { supabase } from './components/supabase/SupabaseCliente';
@@ -57,7 +56,6 @@ function App() {
               <Route path="events" element={<Events_Page />} />
               <Route path="profile" element={<MyProfile_Page />} />
               <Route path="voucher" element={<Voucher_Page />} />
-              <Route path="zoom" element={<Zoom_Page />} />
             </Route>
 
             {/* Ruta comodín para redirigir cualquier ruta desconocida a /content/calendar */}

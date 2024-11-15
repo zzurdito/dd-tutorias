@@ -1,87 +1,67 @@
-import axios from 'axios';
-import { supabase } from '../supabase/SupabaseCliente';
+import { useState } from 'react';
+import { supabase } from '../supabase/SupabaseCliente'; // Importa el cliente de Supabase
 
 function useZoomMeeting() {
-  const getAccessToken = async () => {
-    const clientId = "f77MuQFRw6WecqZJmwFOA";  // CAMBIARLAS POR VARIABLES DE ENTORNO POR SEGURIDAD, EN ENTORNO DE PRUEBA ESTA CORRECTO ASI POR AHORA
-    const clientSecret = "mZqldeNjTQs7iOx73LAa95iruAnH8axE";  // CAMBIARLAS POR VARIABLES DE ENTORNO POR SEGURIDAD, EN ENTORNO DE PRUEBA ESTA CORRECTO ASI POR AHORA
+  const [meetingLink, setMeetingLink] = useState(null);
+  const [isProcessing, setIsProcessing] = useState(false); // Control para evitar duplicados
 
-    const response = await axios.post('https://zoom.us/oauth/token', null, {
-      params: {
-        grant_type: 'client_credentials'
-      },
-      headers: {
-        Authorization: `Basic ${btoa(`${clientId}:${clientSecret}`)}`,
-        'Content-Type': 'application/x-www-form-urlencoded'
-      }
-    });
+  const generateZoomLink = async () => {
+    if (isProcessing) return; // Evita llamadas duplicadas
+    setIsProcessing(true);
 
-    return response.data.access_token;
-  };
-
-  const createZoomMeeting = async () => {
-    const accessToken = await getAccessToken();
-
-    const meetingDetails = {
-      topic: 'Nueva Reunión',
-      type: 2,
-      start_time: new Date().toISOString(),
-      duration: 30,
-      timezone: 'UTC',
-      agenda: 'Reunión generada automáticamente',
-      settings: {
-        host_video: true,
-        participant_video: true,
-        join_before_host: true
-      }
-    };
     try {
-      const response = await axios.post('https://api.zoom.us/v2/users/me/meetings', meetingDetails, {
-        headers: {
-          Authorization: `Bearer ${accessToken}`,
-          'Content-Type': 'application/json'
-        }
+      const response = await fetch('http://localhost:3001/createZoomMeeting', {
+        method: 'POST',
       });
 
-      return response.data.join_url;
+      if (!response.ok) {
+        throw new Error(`HTTP Error: ${response.status} - ${response.statusText}`);
+      }
+
+      const data = await response.json();
+      console.log('Respuesta de la API:', data);
+
+      if (data.meetingLink) {
+        setMeetingLink(data.meetingLink);
+        console.log('Enlace de Zoom generado:', data.meetingLink);
+
+        // Verifica si ya existe el enlace en la base de datos
+        const { data: existingEntry } = await supabase
+          .from('user_tutorias')
+          .select('id')
+          .eq('url_zoom', data.meetingLink)
+          .single();
+
+        if (existingEntry) {
+          console.log('El enlace ya existe en la base de datos.');
+        } else {
+          // Guarda el nuevo enlace
+          const { error } = await supabase
+            .from('user_tutorias')
+            .insert([{ url_zoom: data.meetingLink }]);
+
+          if (error) {
+            console.error('Error al guardar el enlace en Supabase:', error);
+          } else {
+            console.log('Enlace guardado en Supabase correctamente');
+          }
+        }
+
+        return data.meetingLink;
+      } else {
+        console.error('No se recibió un enlace de reunión válido:', data);
+        return null;
+      }
     } catch (error) {
-      console.error('Error al crear la reunión de Zoom:', error);
+      console.error('Error en la solicitud:', error.message);
       return null;
+    } finally {
+      setIsProcessing(false); // Libera el bloqueo
     }
   };
 
-  const saveEventToDatabase = async (event, zoomLink) => {
-    const { data, error } = await supabase
-      .from('user_tutorias')
-      .insert([
-        { ...event, zoom_link: zoomLink }
-      ]);
-
-    if (error) {
-      console.error('Error al guardar el evento en Supabase:', error);
-    } else {
-      console.log('Evento guardado en Supabase:', data);
-    }
-  };
-
-  const handleEventAdd = async (newEvent) => {
-    const zoomLink = await createZoomMeeting();
-
-    if (zoomLink) {
-      const eventToSave = {
-        title: newEvent.title,
-        start: newEvent.start.toISOString(),
-        end: newEvent.end ? newEvent.end.toISOString() : null,
-        zoom_link: zoomLink,
-      };
-
-      await saveEventToDatabase(eventToSave, zoomLink);
-    } else {
-      alert('Error al crear la reunión de Zoom');
-    }
-  };
-
-  return { handleEventAdd };
+  return { meetingLink, generateZoomLink, isProcessing };
 }
 
 export default useZoomMeeting;
+
