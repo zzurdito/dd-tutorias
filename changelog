@@ -1,4 +1,8 @@
 AppTutorias
+1.1.10 (22112014) Bryan Salazar
+-Event ahora muestra todas las citas si eres tutor/admin
+-Myprofile muestra los alumnos a cargo
+
 1.1.9 (14112024) Bryan Salazar
 -Event ya no consume el token si la cita falla
 -El usuario ahora puede editar su nombre, apellido y nombre de usuario

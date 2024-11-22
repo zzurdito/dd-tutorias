@@ -13,7 +13,10 @@ function MyProfile() {
     surname: '',
     username: ''
   });
-  const [error, setError] = useState(''); // Estado para manejar el error de validación
+  const [error, setError] = useState(''); 
+  const [isAdmin, setIsAdmin] = useState(false);
+  
+  const [alumnos, setAlumnos] = useState([]);
   
 
   useEffect(() => {
@@ -27,17 +30,24 @@ function MyProfile() {
 
         if (userError) throw userError;
         setEmail(user.email); // Guardar el email desde Auth
-
+        
         // Consultar la tabla `user_profile` usando el UID
         const { data, error: profileError } = await supabase
           .from('user_profile')
-          .select('name, surname, grade, username')
+          .select('name, surname, grade, username, admin')
           .eq('user_id', user.id)
           .single(); // single() obtiene solo un registro
 
         if (profileError) throw profileError;
 
+        
         setProfile(data); // Guardar los datos del perfil
+        await fetchUserProfile(user.id);
+
+        
+        
+        
+        
       } catch (error) {
         console.error('Error al obtener el perfil del usuario:', error.message);
       } finally {
@@ -46,12 +56,19 @@ function MyProfile() {
     };
 
     fetchProfile();
+    
+    
+    
     // Escucha cambios en la autenticación
     const { data: authListener } = supabase.auth.onAuthStateChange((_event, session) => {
       const newUser = session?.user || null;
       setUser(newUser);
       if (newUser) {
+       
+        
+        
         fetchEventos(newUser.id);
+        
       }
     });
 
@@ -59,18 +76,68 @@ function MyProfile() {
       authListener?.subscription.unsubscribe();
     };
   }, []);
+
+  const fetchUserProfile = async (userId) => {
+    // Obtener el perfil del usuario para determinar si es admin/tutor o alumno
+    const { data: userData, error: userError } = await supabase
+      .from('user_profile')
+      .select('id, admin,grade')
+      .eq('user_id', userId)
+      .single();
+
+    if (userError) {
+      console.error("Error al obtener el perfil del usuario ola:", userError);
+      return;
+    }
+
+    setIsAdmin(userData?.admin || false);
+    if (userData?.admin) {
+      // Obtener los alumnos a cargo si el usuario es admin
+      const { data: alumnosData, error: alumnosError } = await supabase
+        .from('user_profile')
+        .select('username, name, surname, grade')
+        .eq('admin', false) // Obtener alumnos (admin = false)
+        .eq('grade',userData?.grade);
+
+      if (alumnosError) {
+        console.error('Error al obtener los alumnos:', alumnosError);
+      } else {
+        setAlumnos(alumnosData);
+      }
+    }
+    
+  };
   const fetchEventos = async (userId) => {
+    
     const { data: tutoriasData, error: tutoriasError } = await supabase
       .from('user_tutorias')
       .select('id, user:user_profile!fk_user_profile(name), admin:user_profile!fk_admin_profile(name), date')
       .eq('user_profile.user_id', userId)
       .order('date', { ascending: true });
-
-    console.log(userId); // Llamada única a consola
+      
+      
+      
+    
 
     if (tutoriasError) {
       console.error('Error al obtener eventos:', tutoriasError);
-    } else {
+    } else if(isAdmin){
+      
+
+      
+      
+      const today = new Date(); // Fecha de hoy
+      const eventosFormateados = tutoriasData
+        .filter(evento => new Date(evento.date) >= today) // Filtra eventos a partir de hoy
+        .map(evento => ({
+          id: evento.id,
+          title: `Tutoria con ${evento.user?.name || 'Desconocido'}`,
+          start: evento.date,
+        }));
+      setEventos(eventosFormateados);
+
+    }else{
+      
       const today = new Date(); // Fecha de hoy
       const eventosFormateados = tutoriasData
         .filter(evento => new Date(evento.date) >= today) // Filtra eventos a partir de hoy
@@ -159,7 +226,7 @@ function MyProfile() {
   
 
   return (
-    <div className="grid grid-cols-2 grid-rows-1 gap-4 w-full ml-2 pr-2 ">
+    <div className="grid grid-cols-2 grid-rows-1 gap-4 w-full ml-2 pr-2 h-fit">
       {isEditing ? (
         <div className="max-h-max w-full p-8 my-8 space-y-6 bg-white rounded-lg shadow-lg">
           <div className="space-y-4">
@@ -239,7 +306,8 @@ function MyProfile() {
 
 
 </div>
-)}
+) 
+}
 
       <div className="max-h-max w-full  p-8 my-8 space-y-8 bg-white rounded-lg shadow-lg">
         <div><h2 className="block text-3xl font-medium text-gray-700 ">Citas pendientes</h2></div>
@@ -257,6 +325,22 @@ function MyProfile() {
 
         
       </div>
+      {isAdmin && (
+            <div className="space-y-4">
+            <h3 className="text-xl font-bold">Alumnos</h3>
+            <div className="flexbox flex-wrap gap-4">
+              
+              {alumnos.map((alumno) => (
+                <div key={alumno.id} className="p-4 border rounded-lg bg-white shadow-sm w-full">
+                  <p>{alumno.username} {alumno.name} {alumno.surname} {alumno.grade}</p>
+                </div>
+              ))}
+            </div>
+          </div>
+          )}
+       
+      
+      
     </div>
   )
 }
