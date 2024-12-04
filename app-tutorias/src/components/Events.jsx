@@ -5,13 +5,15 @@ import { supabase } from './supabase/SupabaseCliente'
 function Events() {
   const [user, setUser]= useState('');
   const [loading, setLoading] = useState(true);
-  const [showSelection, setShowSelection] = useState(true);
+  const [showSelection, setShowSelection] = useState(false);
   const [selectedDate, setSelectedDate] = useState('');
   const [selectedTutor, setSelectedTutor] = useState('');
   const [tutores, setTutores]=useState([]);
   const [tutorId, setTutorId]=useState('');
   const [tokens, setTokens]=useState('');
   const [horariosDisponibles, setHorariosDisponibles] = useState([]);
+  const [isAdmin, setIsAdmin] = useState(false);
+  const [citasAgrupadas, setCitasAgrupadas] = useState({}); // Estado para citas agrupadas por tutor
 
   // useEffect para manejar la autenticación y los eventos
   useEffect(() => {
@@ -21,6 +23,7 @@ function Events() {
         setUser(session.user);
         await fetchTokens(session.user.id);
         await infoTutor();
+        await fetchUserProfile(session.user.id);
         if (selectedTutor) {
           obtenerIdProfesor(selectedTutor); // Solo obtener el id del tutor si ya está seleccionado
         }
@@ -29,8 +32,47 @@ function Events() {
       }
       
     };
+    
     fetchUser();
-  }, [selectedTutor]);
+    
+    if (isAdmin) {
+      
+      fetchCitasAgrupadas();
+    } else { setShowSelection(true)}
+  }, [selectedTutor,isAdmin]);
+
+  const fetchCitasAgrupadas = async () => {
+    try {
+      // Obtener todas las citas junto con el nombre del tutor
+      const { data, error } = await supabase
+        .from('user_tutorias')
+        .select('date, fk_admin_profile, admin:user_profile!fk_admin_profile(name)')
+        .order('fk_admin_profile', { ascending: true })
+        .order('date', { ascending: true });
+
+      if (error) {
+        console.error('Error al obtener citas agrupadas:', error);
+        return;
+      }
+
+      // Agrupar las citas por tutor (fk_admin_profile)
+      const citasPorTutor = data.reduce((acc, cita) => {
+        const tutorId = cita.fk_admin_profile;
+        if (!acc[tutorId]) {
+          acc[tutorId] = {
+            nombre: cita.admin.name,
+            citas: [],
+          };
+        }
+        acc[tutorId].citas.push(cita.date);
+        return acc;
+      }, {});
+
+      setCitasAgrupadas(citasPorTutor);
+    } catch (error) {
+      console.error('Error en fetchCitasAgrupadas:', error);
+    }
+  };
 
   const infoTutor = async () => {
     const {data, error } = await supabase
@@ -47,6 +89,23 @@ function Events() {
     }
      
   }
+  const fetchUserProfile = async (userId) => {
+    // Obtener el perfil del usuario para determinar si es admin/tutor o alumno
+    const { data: userData, error: userError } = await supabase
+      .from('user_profile')
+      .select('id, admin')
+      .eq('user_id', userId)
+      .single();
+
+    if (userError) {
+      console.error("Error al obtener el perfil del usuario ola:", userError);
+      return;
+    }
+
+    setIsAdmin(userData?.admin || false);
+    
+  };
+
   const handleConfirmAppointment = async (hora) => {
     if (tokens > 0) {
       try {
@@ -85,6 +144,9 @@ function Events() {
         }
   
         // Restar un token
+        if (tokenError){
+          console.log('error en el programa:', error)
+        } else {
         await supabase
           .from('user_tokens')
           .update({ token: userTokens.token - 1 })
@@ -104,11 +166,12 @@ function Events() {
         alert('Cita agendada correctamente');
         // Actualizar el estado de tokens después de la acción
         fetchTokens(user.id); // Re-fetch tokens
+        }
   
       } catch (error) {
         console.error('Error al confirmar la cita:', error);
       }
-    } else {
+    } else if(isAdmin==false){
       alert('No tienes suficientes tokens para agendar la cita');
     }
   };
@@ -216,7 +279,28 @@ function Events() {
   
   return (
     <div className="flex items-center justify-center bg-gray-100 h-full w-full">
-      {showSelection ? (
+      {isAdmin ? (
+        <div className="bg-white p-8 rounded shadow-lg w-full">
+          <h2 className="text-2xl font-bold mb-4">Citas de Profesores</h2>
+          <div className="space-y-6">
+            {Object.keys(citasAgrupadas).map((tutorId) => (
+              <div key={tutorId} className="p-4 border rounded-lg bg-blue-50">
+                <h3 className="text-xl font-bold text-blue-700 mb-2">
+                  {citasAgrupadas[tutorId].nombre}
+                </h3>
+                <ul className="space-y-2">
+                  {citasAgrupadas[tutorId].citas.map((cita, index) => (
+                    <li key={index} className="text-gray-700">
+                      {new Date(cita).toLocaleString()} {/* Formato de fecha y hora legible */}
+                    </li>
+                  ))}
+                </ul>
+              </div>
+            ))}
+          </div>
+        </div>
+      ) :
+      showSelection ? (
 
         <div className="bg-white p-8 rounded shadow-lg w-1/3">
         <h2 className="text-2xl font-bold mb-4">Agendar Cita</h2>

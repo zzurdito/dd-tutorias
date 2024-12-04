@@ -1,10 +1,27 @@
 AppTutorias
-1.1.8 (12112024) Alejandro Gomez
 --------------------------------
+1.1.11 (27112024) Bryan Salazar
+--------------------------------
+-MyProfile ahora muestra los profesores y alumnos que hay en la vista de administrador
+-Ahora se puede conceder y negar admin a los usuario
+-Historial de citas pendientes y citas pasada
+
+1.1.10 (22112024) Bryan Salazar
+--------------------------------
+-Event ahora muestra todas las citas si eres tutor/admin
+-Myprofile muestra los alumnos a cargo
+
+1.1.9 (14112024) Bryan Salazar
+--------------------------------
+-Event ya no consume el token si la cita falla
+-El usuario ahora puede editar su nombre, apellido y nombre de usuario
+1.1.8 (12112024) Alejandro Gomez
+
 - Backend server.js para solicitar url de zoom
 - Hook useZoomMeeting.jsx creado para cada vez que se compre un evento este se llame y genere una nueva reuncion y se guarde en la base de datos
 
 1.1.7 (06112024) Alejandro Gomez
+--------------------------------
 - Arreglado navbar para que muestre los token solo si es usuario y no admin.
 - Arreglado el calendario para que si es admin muestre todas las tutorias con sus alumnos.
 
